@@ -1,4 +1,4 @@
-name: Verify open-source tree
+name: CI
 on: [push, pull_request]
 permissions:
   contents: read

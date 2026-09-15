@@ -58,3 +58,27 @@ test('local data survives a full export, clear and import cycle', async ({ page 
   await page.reload();
   await expect(page.getByText('Updated backup task', { exact: true }).filter({ visible: true })).toBeVisible();
 });
+
+test('AI suggestions can all be saved locally after the provider key is removed', async ({ page }) => {
+  await page.route('https://ai.example.com/v1/chat/completions', route => route.fulfill({
+    contentType: 'application/json',
+    body: JSON.stringify({ choices: [{ message: { content: 'TASKS:\nDraft outline\nWrite introduction\nReview examples\nProofread draft' } }] }),
+  }));
+  await page.goto('/');
+  await expect(page.locator('#app')).toBeVisible();
+  await page.evaluate(() => {
+    localStorage.setItem('kairos-ai-key', 'synthetic-test-key');
+    localStorage.setItem('kairos-ai-base-url', 'https://ai.example.com/v1');
+  });
+  await page.locator('.focus-compose-input').fill('Prepare a short article');
+  await page.locator('.focus-compose-ai').click();
+  await expect(page.locator('.ai-task-item')).toHaveCount(4);
+  await page.evaluate(() => localStorage.removeItem('kairos-ai-key'));
+  await page.locator('.ai-add-all').click();
+  await expect(page.locator('.ai-task-item.is-added')).toHaveCount(4);
+  const titles = await page.evaluate(async () => {
+    const { database } = await import('/js/db.js');
+    return (await database.getTasks()).map(task => task.title);
+  });
+  expect(titles).toEqual(expect.arrayContaining(['Draft outline', 'Write introduction', 'Review examples', 'Proofread draft']));
+});

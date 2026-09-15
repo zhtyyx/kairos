@@ -13,7 +13,7 @@ export default defineConfig(() => {
     plugins: [{ name: 'kairos-offline-shell', apply: 'build', closeBundle() {
       const out = fileURLToPath(new URL('../dist-pwa', import.meta.url));
       const projectRoot = fileURLToPath(new URL('../', import.meta.url));
-      for (const name of ['LICENSE', 'THIRD_PARTY_NOTICES.md']) copyFileSync(join(projectRoot, name), join(out, name));
+      for (const name of ['LICENSE', 'docs/THIRD_PARTY_NOTICES.md']) copyFileSync(join(projectRoot, name), join(out, name.split('/').pop()));
       const paths = readdirSync(out, { recursive: true, withFileTypes: true })
         .filter(entry => entry.isFile())
         .map(entry => join(entry.parentPath, entry.name).slice(out.length).replaceAll('\\', '/'))

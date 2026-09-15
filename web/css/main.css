@@ -14085,13 +14085,6 @@ input, textarea, [contenteditable] {
   background: var(--btn-primary-bg-hover);
 }
 
-.ai-remaining-hint {
-  text-align: center;
-  font-size: 11px;
-  color: var(--text-muted);
-  padding: 8px 0 4px;
-}
-
 .focus-selected-task {
   display: flex;
   align-items: center;

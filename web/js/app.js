@@ -356,21 +356,11 @@ class KairosApp {
         }
       }
 
-      const rem = ai.remainingAdds();
-      if (rem !== Infinity) {
-        const hint = document.createElement('div');
-        hint.className = 'ai-remaining-hint';
-        hint.textContent = t('focus.aiDailyRemaining', { count: rem });
-        panel.querySelector('.ai-chat-area').appendChild(hint);
-      }
       return true;
     } catch (err) {
       loadingEl.remove();
 
-      if (err.message.startsWith('daily_limit:')) {
-        const limit = err.message.split(':')[1];
-        uiShowToast(t('focus.aiLimitReached', { limit }), 'warning');
-      } else if (err.message === 'ai_rate_limited') {
+      if (err.message === 'ai_rate_limited') {
         uiShowToast(t('focus.aiRateLimited'), 'warning');
       } else {
         uiShowToast(t('focus.aiUnavailable'), 'error');
@@ -469,22 +459,11 @@ class KairosApp {
       item.querySelectorAll('select').forEach(select => { select.disabled = true; });
     };
 
-    const disableAllAdds = () => {
-      container.querySelectorAll('.ai-task-add:not(:disabled)').forEach(b => { b.disabled = true; });
-      const allBtn = container.querySelector('.ai-add-all');
-      if (allBtn) allBtn.disabled = true;
-    };
-
     container.querySelectorAll('.ai-task-add').forEach(btn => {
       btn.addEventListener('click', async () => {
         const idx = parseInt(btn.dataset.index);
         const title = tasks[idx];
         if (!title || btn.disabled) return;
-        if (!ai.canAddTask()) {
-          uiShowToast(t('focus.aiAddLimit', { limit: ai.FREE_ADD_LIMIT }), 'warning');
-          disableAllAdds();
-          return;
-        }
         btn.disabled = true;
         const item = btn.closest('.ai-task-item');
         try {
@@ -495,9 +474,7 @@ class KairosApp {
         }
         btn.textContent = '✓';
         markTaskAdded(item);
-        ai.incrementAddCount();
         uiShowToast(t('focus.aiAddedOne'), 'success');
-        if (!ai.canAddTask()) disableAllAdds();
         this.refreshAllViews({ force: true });
         this.loadActivityLog();
       });
@@ -507,10 +484,8 @@ class KairosApp {
     addAllBtn.addEventListener('click', async () => {
       addAllBtn.disabled = true;
       const items = container.querySelectorAll('.ai-task-item:not(.is-added)');
-      const remaining = ai.remainingAdds();
       let count = 0;
       for (const item of items) {
-        if (count >= remaining) break;
         const idx = parseInt(item.dataset.index);
         const title = tasks[idx];
         if (!title) continue;
@@ -520,14 +495,9 @@ class KairosApp {
         count++;
       }
       if (count > 0) {
-        ai.incrementAddCount(count);
         uiShowToast(t('focus.aiAddedAll', { count }), 'success');
-        if (!ai.canAddTask()) disableAllAdds();
         this.refreshAllViews({ force: true });
         this.loadActivityLog();
-      }
-      if (remaining < items.length) {
-        uiShowToast(t('focus.aiAddLimit', { limit: ai.FREE_ADD_LIMIT }), 'warning');
       }
     });
   }

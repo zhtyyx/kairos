@@ -49,32 +49,6 @@ export const ai = {
     if (model != null) this.setLocalModel(model);
   },
 
-  FREE_ADD_LIMIT: 3,
-
-  _todayKey() {
-    return 'kairos-ai-adds-' + new Date().toISOString().slice(0, 10);
-  },
-
-  getAddCount() {
-    return parseInt(localStorage.getItem(this._todayKey()) || '0', 10);
-  },
-
-  incrementAddCount(n = 1) {
-    const count = this.getAddCount() + n;
-    localStorage.setItem(this._todayKey(), String(count));
-    return count;
-  },
-
-  canAddTask() {
-    if (this.getLocalKey()) return true;
-    return this.getAddCount() < this.FREE_ADD_LIMIT;
-  },
-
-  remainingAdds() {
-    if (this.getLocalKey()) return Infinity;
-    return Math.max(0, this.FREE_ADD_LIMIT - this.getAddCount());
-  },
-
   getStatus() {
     if (this.getLocalKey()) return { enabled: true, mode: 'own_key' };
     return { enabled: false, mode: 'none' };
