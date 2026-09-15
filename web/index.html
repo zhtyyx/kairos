@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="icon" href="/images/icon.svg" type="image/svg+xml">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Kairos 时流是一款免费在线番茄钟和任务管理工具。支持番茄工作法专注计时、看板/四象限任务管理、年度热力图统计，帮你科学管理时间、提升工作效率。">
+    <meta name="keywords" content="Kairos,时流,番茄钟,番茄工作法,时间管理,任务管理,专注计时,pomodoro,todo,GTD,四象限,看板">
+    <meta name="theme-color" content="#F0ECE6">
+    <meta name="robots" content="index, follow">
+    <title>Kairos 时流 - 免费在线番茄钟 | 番茄工作法专注计时与任务管理</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Kairos 时流 - 免费在线番茄钟与任务管理">
+    <meta property="og:description" content="番茄工作法专注计时、看板/四象限任务管理、年度热力图统计。支持 PWA 离线使用，数据云端同步。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:site_name" content="Kairos 时流">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Kairos 时流 - 免费在线番茄钟与任务管理">
+    <meta name="twitter:description" content="番茄工作法专注计时、看板/四象限任务管理、年度热力图统计。">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Kairos 时流",
+      "description": "免费在线番茄钟和任务管理工具，支持番茄工作法专注计时、看板/四象限任务管理、年度热力图统计",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+      "featureList": ["番茄工作法计时", "任务管理", "看板视图", "四象限视图", "年度热力图", "PWA离线支持", "数据云端同步"]
+    }
+    </script>
+
+    <link rel="manifest" href="/manifest.json">
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/mini-timer.css">
+</head>
+<body>
+    <div id="app" class="hidden">
+        <header class="app-header top-nav">
+            <div class="header-content">
+                <div class="logo-section logo">
+                    <img src="images/logo.svg" alt="KAIROS" class="logo-img logo-light" />
+                    <img src="images/logo-dark.svg" alt="KAIROS" class="logo-img logo-dark" />
+                </div>
+
+                <div class="header-nav" aria-label="主导航">
+                    <nav class="main-nav nav-tabs" id="main-view-switcher">
+                        <button class="nav-btn nav-tab view-switcher-btn active" type="button" data-view="work" data-i18n="nav.focus">专注</button>
+                        <button class="nav-btn nav-tab view-switcher-btn" type="button" data-view="project" data-i18n="nav.project">项目</button>
+                        <div class="nav-tab-wrapper has-dropdown">
+                            <button class="nav-btn nav-tab view-switcher-btn task-nav-btn" type="button" data-view="task" aria-haspopup="true" aria-expanded="false">
+                                <span data-i18n="nav.task">任务</span>
+                                <span class="nav-dropdown-icon" aria-hidden="true">▾</span>
+                            </button>
+                            <div class="task-view-dropdown" role="menu" aria-label="任务视图">
+                                <button class="task-dropdown-item" type="button" data-task-view="project">
+                                    <span class="task-dropdown-label" data-i18n="nav.projectView">项目视图</span>
+                                </button>
+                                <button class="task-dropdown-item" type="button" data-task-view="kanban">
+                                    <span class="task-dropdown-label" data-i18n="nav.kanbanView">进度视图</span>
+                                </button>
+                                <button class="task-dropdown-item" type="button" data-task-view="matrix">
+                                    <span class="task-dropdown-label" data-i18n="nav.matrixView">四象限视图</span>
+                                </button>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+
+                <div class="header-actions user-area">
+                    <button id="lang-toggle" class="lang-toggle-btn" title="切换语言 / Switch Language">EN</button>
+
+                    <div class="right-button-group">
+                        <div class="user-center-container">
+                            <div class="user-avatar" title="用户设置">
+                                <div class="avatar-circle">U</div>
+                            </div>
+                            <div class="user-dropdown" id="user-dropdown">
+                                <div class="menu-item" data-action="summary">
+                                    <span class="menu-text" data-i18n="header.summary">总结</span>
+                                </div>
+                                <div class="menu-item" data-action="profile">
+                                    <span class="menu-text" data-i18n="header.userSettings">用户设置</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main id="work-view" class="main-view active">
+            <div class="three-column-layout">
+                <aside class="left-panel">
+                    <div class="panel-top-controls sidebar-header">
+                        <select class="project-filter project-select" hidden>
+                            <option value="">所有项目</option>
+                        </select>
+                        <div class="custom-dropdown" id="project-dropdown">
+                            <button class="custom-dropdown-trigger" type="button">
+                                <span class="custom-dropdown-text" data-i18n="focus.allProjects">所有项目</span>
+                                <span class="custom-dropdown-arrow">▾</span>
+                            </button>
+                            <div class="custom-dropdown-menu">
+                                <div class="custom-dropdown-option is-selected" data-value="" data-i18n="focus.allProjects">所有项目</div>
+                            </div>
+                        </div>
+                        <input type="text" class="search-input" data-i18n-placeholder="focus.searchTask" placeholder="搜索任务，开始专注">
+                    </div>
+
+                    <div class="task-scroll-area">
+                        <div class="task-list"></div>
+                    </div>
+                </aside>
+
+                <main class="center-panel">
+                    <div class="center-area">
+                        <section class="timer-section">
+                            <button class="mini-mode-btn mini-panel-toggle" title="切换迷你模式" aria-label="切换迷你模式" data-i18n-title="timer.switchMini">
+                                <svg class="mini-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <rect x="2" y="2" width="10" height="10" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                                    <rect x="7" y="7" width="5" height="5" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                                </svg>
+                            </button>
+
+                            <div class="timer-ring-wrap">
+                                <div class="timer-glow"></div>
+                                <svg class="timer-svg" viewBox="0 0 240 240">
+                                    <defs>
+                                        <linearGradient id="timer-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#D4C4A8"/>
+                                            <stop offset="50%" stop-color="#C17F59"/>
+                                            <stop offset="100%" stop-color="#A0725A"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="ring-bg" cx="120" cy="120" r="110"/>
+                                    <circle class="ring-bloom" cx="120" cy="120" r="110"/>
+                                    <circle class="ring-progress" cx="120" cy="120" r="110"/>
+                                </svg>
+                                <div class="timer-inner">
+                                    <div class="timer-session-label" data-i18n="timer.focusSession">专注时段</div>
+                                    <div class="timer-display" aria-live="polite">25:00</div>
+                                    <div class="timer-session-dots">
+                                        <span class="session-dot"></span>
+                                        <span class="session-dot"></span>
+                                        <span class="session-dot"></span>
+                                        <span class="session-dot"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="timer-status sr-only" aria-live="polite" data-i18n="timer.readyToFocus">准备开始专注</p>
+
+                            <div class="timer-controls">
+                                <button id="reset-btn" class="timer-ctrl-icon" title="重置" data-i18n="timer.reset" data-i18n-title="timer.reset">重置</button>
+                                <button id="start-pause-btn" class="timer-ctrl-main" title="开始专注" data-i18n="timer.startFocus" data-i18n-title="timer.startFocus">开始专注</button>
+                            </div>
+                        </section>
+
+                        <div class="focus-compose">
+                            <div class="focus-selected-task" hidden>
+                                <span class="focus-selected-name" data-i18n="focus.personalActivity">个人活动</span>
+                            </div>
+                            <div class="focus-compose-row">
+                                <textarea class="activity-input focus-compose-input" data-i18n-placeholder="focus.recordThoughts" placeholder="记录想法..." rows="1"></textarea>
+                                <button class="focus-compose-ai" type="button" data-i18n-title="focus.aiBreakdown" title="AI 拆解任务">
+                                    <span class="focus-compose-ai-label" aria-hidden="true">AI</span>
+                                </button>
+                                <button class="focus-compose-send send-btn" type="button" title="发送" disabled>
+                                    <span class="focus-compose-send-icon">↑</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <aside id="activity-panel" class="right-panel right-sidebar">
+                    <div class="activity-log">
+                        <h3 class="activity-header" data-i18n="focus.noteHistory">活动记录</h3>
+                        <div class="activity-list log-list"></div>
+                    </div>
+                </aside>
+            </div>
+            <button id="activity-panel-toggle"
+                    class="activity-panel-toggle"
+                    type="button"
+                    aria-controls="activity-panel"
+                    aria-expanded="false"
+                    data-i18n="focus.showNotes">活动记录</button>
+            <div id="activity-panel-backdrop" class="activity-panel-backdrop" aria-hidden="true"></div>
+        </main>
+
+        <main id="project-view" class="main-view">
+            <div class="single-column-layout">
+                <div class="expanded-content-area">
+                    <div class="project-overview">
+                        <section class="starred-boards">
+                            <h2 class="section-title" data-i18n="project.starred">星标项目</h2>
+                            <div class="boards-grid starred"></div>
+                        </section>
+
+                        <section class="all-boards">
+                            <div class="section-header">
+                                <h2 class="section-title" data-i18n="project.all">所有项目</h2>
+                                <button class="create-board-btn" id="create-board-btn" title="新建项目" data-action="create-project" data-i18n-title="project.createNew">
+                                    <span class="btn-icon">+</span>
+                                    <span data-i18n="project.createNew">新建项目</span>
+                                </button>
+                            </div>
+                            <div class="boards-grid"></div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <main id="task-view" class="main-view">
+            <div class="task-view-container">
+                <section class="task-idle-state" aria-label="任务引言">
+                    <div class="task-quote">
+                        <p class="task-quote-kicker">KAIROS</p>
+                        <blockquote>人不是被事情本身困扰，而是被自己对事情的看法困扰。</blockquote>
+                        <p class="task-quote-author">Epictetus</p>
+                    </div>
+                </section>
+
+                <section id="task-project-view" class="task-subview project-view" hidden>
+                    <div class="task-subview-content"></div>
+                </section>
+
+                <section id="task-kanban-view" class="task-subview kanban-view" hidden>
+                    <div class="task-subview-content">
+                        <div class="status-progress" data-role="status-board"></div>
+                    </div>
+                </section>
+
+                <section id="task-matrix-view" class="task-subview matrix-view" hidden>
+                    <div class="task-subview-content"></div>
+                </section>
+            </div>
+        </main>
+
+        <main id="user-profile-view" class="main-view">
+            <div class="github-style-layout">
+                <button class="back-btn ceramic-button" id="back-to-main-btn" data-i18n="settings.backToMain">← 返回主页</button>
+
+                <div class="profile-layout">
+                    <aside class="profile-sidebar">
+                        <div class="user-card ceramic-panel">
+                            <div class="user-avatar-section">
+                                <div class="avatar-circle-github">U</div>
+                                <h1 class="user-name">用户</h1>
+                            </div>
+                        </div>
+
+                        <div class="settings-panel ceramic-panel">
+                            <h3 class="settings-title" data-i18n="settings.title">设置</h3>
+
+                            <div class="settings-section">
+                                <h4 class="settings-section-title" data-i18n="settings.pomodoro">番茄钟</h4>
+                                <div class="settings-item">
+                                    <label for="setting-focus-duration" data-i18n="settings.focusDuration">专注时长</label>
+                                    <div class="settings-input-group">
+                                        <input type="number" id="setting-focus-duration" min="1" max="120" value="25">
+                                        <span class="settings-unit" data-i18n="settings.minutes">分钟</span>
+                                    </div>
+                                </div>
+                                <div class="settings-item">
+                                    <label for="setting-short-break" data-i18n="settings.shortBreak">短休息</label>
+                                    <div class="settings-input-group">
+                                        <input type="number" id="setting-short-break" min="1" max="30" value="5">
+                                        <span class="settings-unit" data-i18n="settings.minutes">分钟</span>
+                                    </div>
+                                </div>
+                                <div class="settings-item">
+                                    <label for="setting-long-break" data-i18n="settings.longBreak">长休息</label>
+                                    <div class="settings-input-group">
+                                        <input type="number" id="setting-long-break" min="1" max="60" value="15">
+                                        <span class="settings-unit" data-i18n="settings.minutes">分钟</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-section">
+                                <h4 class="settings-section-title" data-i18n="settings.notification">通知</h4>
+                                <div class="settings-item toggle-item">
+                                    <label for="setting-notification" data-i18n="settings.desktopNotification">桌面通知</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="setting-notification" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="settings-item toggle-item">
+                                    <label for="setting-sound" data-i18n="settings.soundEffect">提示音效</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="setting-sound" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="settings-section">
+                                <h4 class="settings-section-title" data-i18n="settings.appearance">外观</h4>
+                                <div class="settings-item">
+                                    <label for="setting-theme" data-i18n="settings.theme">主题</label>
+                                    <div class="settings-dropdown" id="setting-theme" data-value="light">
+                                        <button class="settings-dropdown-trigger" type="button">
+                                            <span class="settings-dropdown-text" data-i18n="settings.themeLight">浅色</span>
+                                            <span class="settings-dropdown-arrow">▾</span>
+                                        </button>
+                                        <div class="settings-dropdown-menu">
+                                            <div class="settings-dropdown-option is-selected" data-value="light" data-i18n="settings.themeLight">浅色</div>
+                                            <div class="settings-dropdown-option" data-value="dark" data-i18n="settings.themeDark">深色</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="settings-section">
+                                <h4 class="settings-section-title" data-i18n="settings.data">数据</h4>
+                                <button class="settings-btn" id="btn-export-data" data-i18n="settings.export">导出数据</button>
+                                <button class="settings-btn" id="btn-import-data" data-i18n="settings.import">导入数据</button>
+                                <input type="file" id="import-file-input" accept=".json" style="display:none">
+                            </div>
+                        </div>
+                    </aside>
+
+                    <main class="profile-main">
+                        <div class="heatmap-main-section ceramic-panel">
+                            <div class="heatmap-header">
+                                <h3 class="section-title" id="heatmap-title">0 contributions in the last year</h3>
+                                <div class="heatmap-controls">
+                                    <select class="year-selector" id="year-selector"></select>
+                                </div>
+                            </div>
+
+                            <div class="github-heatmap-container" id="github-heatmap">
+                                <div class="months-labels">
+                                    <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+                                    <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+                                    <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+                                </div>
+
+                                <div class="heatmap-content">
+                                    <div class="weekdays-labels">
+                                        <span>Mon</span>
+                                        <span>Wed</span>
+                                        <span>Fri</span>
+                                    </div>
+                                    <div class="heatmap-grid" id="heatmap-grid"></div>
+                                </div>
+                            </div>
+
+                            <div class="heatmap-legend">
+                                <span class="legend-text" data-i18n="heatmap.less">Less</span>
+                                <div class="legend-squares">
+                                    <div class="legend-square" data-level="0"></div>
+                                    <div class="legend-square" data-level="1"></div>
+                                    <div class="legend-square" data-level="2"></div>
+                                    <div class="legend-square" data-level="3"></div>
+                                    <div class="legend-square" data-level="4"></div>
+                                </div>
+                                <span class="legend-text" data-i18n="heatmap.more">More</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-stats ceramic-panel">
+                            <h3 class="section-title" data-i18n="stats.title">活动统计</h3>
+                            <div class="stats-cards-grid">
+                                <div class="activity-stat-card">
+                                    <div class="stat-title" data-i18n="stats.pomodoros">番茄钟</div>
+                                    <div class="stat-content">
+                                        <div class="big-number" id="total-pomodoros">0</div>
+                                        <div class="stat-subtitle" data-i18n="stats.pomodoroUnit">个</div>
+                                    </div>
+                                </div>
+
+                                <div class="activity-stat-card">
+                                    <div class="stat-title" data-i18n="stats.focusTime">专注时长</div>
+                                    <div class="stat-content">
+                                        <div class="big-number" id="total-focus-time">0</div>
+                                        <div class="stat-subtitle" data-i18n="stats.focusTimeUnit">小时</div>
+                                    </div>
+                                </div>
+
+                                <div class="activity-stat-card">
+                                    <div class="stat-title" data-i18n="stats.focusLevel">专注等级</div>
+                                    <div class="stat-content">
+                                        <div class="big-number" id="focus-level">1</div>
+                                        <div class="stat-subtitle" data-i18n="stats.level1">专注新手</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ceramic-panel" id="ai-settings-section">
+                            <h3 class="section-title" data-i18n="settings.ai">AI 助手</h3>
+                            <p class="ai-hint" data-i18n="settings.aiHint">API Key 保存在当前浏览器。使用 AI 时，输入内容会发送到你选择的服务。</p>
+                            <div class="ai-config-form">
+                                <div class="ai-field">
+                                    <label data-i18n="settings.aiBaseUrl">API 地址</label>
+                                    <input type="text" id="setting-ai-base-url" placeholder="https://api.deepseek.com">
+                                </div>
+                                <div class="ai-field">
+                                    <label data-i18n="settings.aiModel">模型</label>
+                                    <input type="text" id="setting-ai-model" placeholder="deepseek-chat">
+                                </div>
+                                <div class="ai-field">
+                                    <label>API Key</label>
+                                    <input type="password" id="setting-ai-key" placeholder="sk-...">
+                                </div>
+                                <div class="ai-field-footer">
+                                    <span id="ai-key-status" class="ai-status-text"></span>
+                                    <button id="btn-save-ai-config" data-i18n="settings.aiSaveKey">保存</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </main>
+                </div>
+            </div>
+        </main>
+
+
+    </div>
+
+    <div id="mini-timer" class="mini-timer" hidden>
+        <div class="mini-timer-handle">⋮⋮</div>
+        <div class="mini-timer-content">
+            <div class="mini-time-display">25:00</div>
+            <div class="mini-controls">
+                <button class="mini-btn" id="mini-start-pause">▶</button>
+                <button class="mini-btn" id="mini-reset">↺</button>
+                <button class="mini-btn" id="mini-close">✕</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

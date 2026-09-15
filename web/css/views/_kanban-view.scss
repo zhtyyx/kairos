@@ -1,0 +1,191 @@
+@use '../ningyou/tokens' as *;
+
+// 看板容器
+
+.kanban-container-ny {
+  display: flex;
+  gap: 16px;
+  height: 100%;
+  padding: 24px;
+  overflow-x: auto;
+}
+
+// 状态列
+
+.kanban-column-ny {
+  flex: 1 1 0;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  max-height: none;
+}
+
+// 列间分隔线
+.kanban-column-ny + .kanban-column-ny {
+  border-left: 1px solid rgba(#D6D3D1, 0.8);
+  padding-left: 16px;
+}
+
+// 覆盖每列可能的彩色边框
+.kanban-column-ny[data-status="todo"],
+.kanban-column-ny[data-status="doing"],
+.kanban-column-ny[data-status="review"],
+.kanban-column-ny[data-status="done"] {
+  border: none;
+  border-left: none;
+  background: transparent;
+
+  .kanban-column-header-ny {
+    background: transparent;
+    border-bottom: none;
+  }
+}
+
+// 列头部
+.kanban-column-header-ny {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-ny-3;
+  padding: 0 0 12px 0;
+  flex-shrink: 0;
+  background: transparent;
+  border-bottom: none;
+}
+
+.kanban-column-title-ny {
+  display: flex;
+  align-items: center;
+  gap: $space-ny-2;
+}
+
+.column-icon-ny {
+  font-size: $font-lg;
+}
+
+.column-name-ny {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+
+  // 去掉状态小圆点
+  &::before {
+    display: none;
+  }
+}
+
+.column-count-ny {
+  padding: 1px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(#78716C, 0.1);
+  color: #57534E;
+  border-radius: 10px;
+}
+
+// 列内容
+.kanban-column-content-ny {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 0 0;
+  overflow-y: auto;
+  overflow-x: visible;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.08); border-radius: 2px; }
+}
+
+// 空列状态
+.kanban-empty-ny {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: $space-ny-2;
+  padding: 32px 16px;
+  text-align: center;
+  color: #A8A29E;
+  font-size: 13px;
+  border: 1px dashed #E7E5E4;
+  border-radius: 8px;
+}
+
+// 添加任务按钮
+
+.kanban-add-task-ny {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: $space-ny-1;
+  width: 100%;
+  padding: 8px 0;
+  margin-top: auto;
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+  }
+}
+
+// 拖放状态
+
+.kanban-column-ny.is-drag-over {
+  box-shadow: none;
+  border-color: transparent;
+
+  .kanban-column-content-ny {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+  }
+}
+
+// 响应式
+
+@media (max-width: 1024px) {
+  .kanban-column-ny {
+    flex: 0 0 240px;
+    min-width: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .kanban-container-ny {
+    flex-direction: column;
+    overflow-x: visible;
+    overflow-y: auto;
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .kanban-column-ny {
+    flex: none;
+    width: 100%;
+  }
+
+  .kanban-column-ny + .kanban-column-ny {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid rgba(#D6D3D1, 0.6);
+    padding-top: 12px;
+  }
+
+  .kanban-column-content-ny {
+    max-height: 250px;
+  }
+}

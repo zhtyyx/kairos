@@ -1,0 +1,114 @@
+@use '../ningyou/tokens' as *;
+@use '../ningyou/mixins' as *;
+
+// 基础标签
+
+.glaze-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-ny-1;
+  padding: 2px $space-ny-2;
+  font-size: $font-xs;
+  font-weight: 500;
+  color: $jianzhan;
+  background: rgba($tianqing, 0.2);
+  border: 1px solid rgba($tianqing, 0.4);
+  border-radius: $radius-sm-ny;
+  transition:
+    background $duration-fast-ny $ease-metal,
+    border-color $duration-fast-ny $ease-metal;
+  white-space: nowrap;
+
+  &:hover {
+    background: rgba($tianqing, 0.3);
+    border-color: rgba($tianqing, 0.6);
+  }
+}
+
+// 四象限变体
+
+.glaze-tag--q1 {
+  background: rgba($warm-ochre, 0.15);
+  border-color: rgba($warm-ochre, 0.3);
+  color: darken($warm-ochre, 15%);
+
+  &:hover {
+    background: rgba($warm-ochre, 0.25);
+  }
+}
+
+.glaze-tag--q2 {
+  background: rgba($celadon, 0.15);
+  border-color: rgba($celadon, 0.3);
+  color: darken($celadon, 15%);
+
+  &:hover {
+    background: rgba($celadon, 0.25);
+  }
+}
+
+.glaze-tag--q3 {
+  background: rgba($rice-glaze, 0.2);
+  border-color: rgba($rice-glaze, 0.4);
+  color: darken($rice-glaze, 25%);
+
+  &:hover {
+    background: rgba($rice-glaze, 0.3);
+  }
+}
+
+.glaze-tag--q4 {
+  background: rgba($ash-glaze, 0.15);
+  border-color: rgba($ash-glaze, 0.3);
+  color: darken($ash-glaze, 20%);
+
+  &:hover {
+    background: rgba($ash-glaze, 0.25);
+  }
+}
+
+// 尺寸变体
+
+.glaze-tag--sm {
+  padding: 1px $space-ny-1;
+  font-size: 10px;
+}
+
+.glaze-tag--lg {
+  padding: $space-ny-1 $space-ny-3;
+  font-size: $font-sm;
+}
+
+// 可点击/可删除标签
+
+.glaze-tag--clickable {
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.glaze-tag--removable {
+  padding-right: $space-ny-1;
+
+  .glaze-tag-remove {
+    @include flex-center;
+    width: 14px;
+    height: 14px;
+    margin-left: $space-ny-1;
+    font-size: 10px;
+    color: inherit;
+    opacity: 0.6;
+    border-radius: $radius-full;
+    cursor: pointer;
+    transition:
+      opacity $duration-fast-ny $ease-metal,
+      background $duration-fast-ny $ease-metal;
+
+    &:hover {
+      opacity: 1;
+      background: rgba($jianzhan, 0.1);
+    }
+  }
+}

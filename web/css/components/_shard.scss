@@ -1,0 +1,164 @@
+@use '../ningyou/tokens' as *;
+
+// 基础结构
+
+.shard-task {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: $space-ny-1;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: $radius-md-ny;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  overflow: visible;
+  box-shadow: none;
+
+  // 清除任何继承的伪元素（上游 ceramic-surface 遗留）
+  &::before, &::after {
+    display: none;
+  }
+
+  &:hover {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    transform: none;
+    box-shadow: none;
+
+    .shard-actions { opacity: 1; }
+  }
+}
+
+// 内部结构
+
+.shard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-ny-2;
+}
+
+.shard-title {
+  margin: 0;
+  font-size: $font-base;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.4;
+  white-space: normal;
+  overflow: visible;
+}
+
+.shard-description {
+  margin: 0;
+  font-size: $font-sm;
+  color: #A8A29E;
+  line-height: 1.4;
+}
+
+.shard-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  font-size: $font-sm;
+  color: var(--text-muted);
+}
+
+.meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-ny-1;
+}
+
+.meta-icon {
+  font-size: $font-base;
+}
+
+.meta-board {
+  font-size: 11px;
+  color: #A8A29E;
+}
+
+// 快捷操作按钮
+
+.shard-actions {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+
+// 状态样式
+
+.shard-task.is-selected {
+  border-color: #A8A29E;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.06);
+  transform: none;
+}
+
+.shard-task.is-dragging {
+  transform: scale(0.95) rotate(2deg);
+  box-shadow: $shadow-deep;
+  opacity: 0.9;
+  z-index: 1000;
+  cursor: grabbing;
+}
+
+.shard-task.is-done {
+  background: var(--bg-secondary);
+  border-color: #F5F5F4;
+
+  .shard-title {
+    color: #A8A29E;
+    text-decoration: line-through;
+  }
+}
+
+// 优先级色条
+
+.shard-task[data-priority="urgent-important"] {
+  border-left: 3px solid $warm-ochre;
+}
+
+.shard-task[data-priority="not-urgent-important"] {
+  border-left: 3px solid #3B82F6;
+}
+
+.shard-task[data-priority="urgent-not-important"] {
+  border-left: 3px solid #D97706;
+}
+
+.shard-task[data-priority="not-urgent-not-important"] {
+  border-left: 3px solid #D6D3D1;
+}
+
+// 响应式
+
+@media (max-width: 768px) {
+  .shard-actions {
+    opacity: 1;
+    position: static;
+    transform: none;
+    margin-top: $space-ny-2;
+    justify-content: flex-end;
+  }
+}
+
+// 无障碍
+
+@media (prefers-reduced-motion: reduce) {
+  .shard-task {
+    transition: none;
+  }
+
+  .shard-task.is-dragging {
+    transform: scale(0.98);
+  }
+}

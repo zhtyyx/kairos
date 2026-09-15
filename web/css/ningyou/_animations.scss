@@ -1,0 +1,225 @@
+@use 'tokens' as *;
+
+// 任务卡片动画
+
+// 进入动画 - 木 (弹性)
+@keyframes shard-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// 退出动画 - 火 (快速)
+@keyframes shard-exit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+// 完成动画 - 水 (流畅)
+@keyframes shard-complete {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+// 抖动动画 - 火 (警告)
+@keyframes shard-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+// 视图切换动画
+
+@keyframes view-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes view-slide-out {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+
+@keyframes view-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+// 拖拽相关动画
+
+@keyframes pulse-border {
+  0%, 100% {
+    border-color: rgba($ruqing, 0.4);
+  }
+  50% {
+    border-color: rgba($ruqing, 0.8);
+  }
+}
+
+@keyframes drop-zone-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba($ruqing, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba($ruqing, 0);
+  }
+}
+
+// 开片纹理流动 (骨架屏)
+
+@keyframes crackle-loading {
+  0% {
+    background-position: 0 0;
+    opacity: 0.03;
+  }
+  50% {
+    opacity: 0.06;
+  }
+  100% {
+    background-position: 100px 100px;
+    opacity: 0.03;
+  }
+}
+
+// 手风琴折叠动画 (移动端四象限)
+
+@keyframes accordion-expand {
+  0% {
+    max-height: 0;
+    opacity: 0;
+  }
+  100% {
+    max-height: 500px;
+    opacity: 1;
+  }
+}
+
+@keyframes accordion-collapse {
+  0% {
+    max-height: 500px;
+    opacity: 1;
+  }
+  100% {
+    max-height: 0;
+    opacity: 0;
+  }
+}
+
+// 按钮涟漪效果
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+// 高光闪烁 (陶瓷质感)
+
+@keyframes ceramic-shine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// 动画工具类
+
+// 交错进入动画 (列表)
+.animate-stagger {
+  animation: shard-enter $duration-normal-ny $ease-wood;
+  animation-fill-mode: both;
+
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 50}ms;
+    }
+  }
+}
+
+// 视图进入
+.is-entering {
+  animation: view-slide-in $duration-normal-ny $ease-water;
+}
+
+// 视图离开
+.is-leaving {
+  animation: view-slide-out $duration-fast-ny $ease-fire;
+}
+
+// 淡入
+.fade-in {
+  animation: view-fade-in $duration-normal-ny $ease-earth;
+}
+
+// 抖动警告
+.shake {
+  animation: shard-shake $duration-normal-ny $ease-fire;
+}
+
+// 无障碍：减少动画模式
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-stagger,
+  .is-entering,
+  .is-leaving,
+  .fade-in,
+  .shake {
+    animation: none !important;
+    transition: opacity $duration-fast-ny $ease-metal !important;
+  }
+
+  // 简化的进入动画
+  @keyframes shard-enter {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes view-slide-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "Kairos 时流 - 番茄钟与任务管理",
+  "short_name": "Kairos",
+  "description": "免费在线番茄钟和任务管理工具。番茄工作法专注计时、看板/四象限任务管理、年度热力图统计。",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#F0ECE6",
+  "theme_color": "#F0ECE6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": [
+    "productivity",
+    "utilities"
+  ]
+}

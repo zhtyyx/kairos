@@ -1,0 +1,213 @@
+@use '../ningyou/tokens' as *;
+@use '../ningyou/mixins' as *;
+
+// 基础按钮
+
+.porcelain-btn {
+  @include focus-ring-ny;
+  @include touch-target;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-ny-2;
+  padding: $space-ny-2 $space-ny-4;
+  font-family: $font-family-ny;
+  font-size: $font-base;
+  font-weight: 500;
+  color: white;
+  background: $ruqing;
+  border: 1px solid $ruqing;
+  border-radius: $radius-md-ny;
+  cursor: pointer;
+  transition:
+    background $duration-fast-ny $ease-metal,
+    border-color $duration-fast-ny $ease-metal,
+    transform $duration-instant $ease-metal,
+    box-shadow $duration-fast-ny $ease-metal;
+
+  &:hover {
+    background: $ruqing-hover;
+    border-color: $ruqing-hover;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// 变体
+
+// 次要按钮 (轮廓)
+.porcelain-btn--secondary {
+  color: $ruqing;
+  background: transparent;
+  border-color: $ruqing;
+
+  &:hover {
+    background: rgba($ruqing, 0.1);
+  }
+}
+
+// 幽灵按钮
+.porcelain-btn--ghost {
+  color: $jianzhan;
+  background: transparent;
+  border-color: transparent;
+
+  &:hover {
+    background: rgba($jianzhan, 0.06);
+  }
+}
+
+// 危险按钮
+.porcelain-btn--danger {
+  background: $warm-ochre;
+  border-color: $warm-ochre;
+
+  &:hover {
+    background: darken($warm-ochre, 8%);
+    border-color: darken($warm-ochre, 8%);
+  }
+}
+
+// 图标按钮
+
+.porcelain-btn-icon {
+  @include touch-target;
+  @include focus-ring-ny;
+
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: $radius-full;
+  background: rgba($yingqing, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid $tianqing;
+  color: $jianzhan;
+  font-size: $font-base;
+  cursor: pointer;
+  transition:
+    background $duration-fast-ny $ease-metal,
+    color $duration-fast-ny $ease-metal,
+    transform $duration-fast-ny $ease-metal,
+    border-color $duration-fast-ny $ease-metal;
+
+  &:hover {
+    background: $ruqing;
+    border-color: $ruqing;
+    color: white;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// 图标按钮尺寸变体
+.porcelain-btn-icon--sm {
+  width: 24px;
+  height: 24px;
+  font-size: $font-sm;
+}
+
+.porcelain-btn-icon--lg {
+  width: 44px;
+  height: 44px;
+  font-size: $font-lg;
+}
+
+// 尺寸变体
+
+.porcelain-btn--sm {
+  min-height: 32px;
+  padding: $space-ny-1 $space-ny-3;
+  font-size: $font-sm;
+}
+
+.porcelain-btn--lg {
+  min-height: 48px;
+  padding: $space-ny-3 $space-ny-5;
+  font-size: $font-md;
+}
+
+// 添加任务按钮 (虚线)
+
+.porcelain-btn--add {
+  @include focus-ring-ny;
+
+  display: inline-flex;
+  align-items: center;
+  gap: $space-ny-1;
+  padding: $space-ny-2 $space-ny-3;
+  font-size: $font-sm;
+  color: rgba($jianzhan, 0.6);
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px dashed rgba($jianzhan, 0.2);
+  border-radius: $radius-sm-ny;
+  cursor: pointer;
+  transition:
+    background $duration-fast-ny $ease-metal,
+    border-color $duration-fast-ny $ease-metal,
+    color $duration-fast-ny $ease-metal;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: $ruqing;
+    border-style: solid;
+    color: $ruqing;
+  }
+}
+
+// 加载状态
+
+.porcelain-btn--loading {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: $radius-full;
+    animation: btn-spin 0.8s linear infinite;
+  }
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// 无障碍
+
+@media (prefers-reduced-motion: reduce) {
+  .porcelain-btn,
+  .porcelain-btn-icon {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+
+  .porcelain-btn--loading::after {
+    animation: none;
+  }
+}

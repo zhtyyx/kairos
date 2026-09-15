@@ -1,0 +1,153 @@
+// 五窑色系 (Five Kiln Colors)
+
+$yingqing: #E8F4F2; // 影青 - 背景色、卡片底色
+$tianqing: #B8D4CE; // 天青 - 次要元素、边框
+$ruqing: #7EB5A6; // 汝青 - 主色调、按钮
+$longquan: #4A9B87; // 龙泉 - 强调色、链接
+$jianzhan: #2D3B36; // 建盏 - 文字、深色背景
+
+// 主色变体
+$ruqing-hover: darken($ruqing, 8%);
+$ruqing-light: lighten($ruqing, 12%);
+$ruqing-subtle: rgba($ruqing, 0.08);
+
+// 四象限色系 (Quadrant Colors)
+
+$warm-ochre: #C17F59; // Q1 暖赭 - 紧急重要
+$celadon: #7EB5A6; // Q2 青瓷 - 重要不紧急 (同汝青)
+$rice-glaze: #D4C4A8; // Q3 米釉 - 紧急不重要
+$ash-glaze: #A8A8A0; // Q4 灰釉 - 不紧急不重要
+
+// 四象限纯色背景 (用于方案A)
+$quadrant-q1-solid: $warm-ochre;
+$quadrant-q2-solid: $celadon;
+$quadrant-q3-solid: $rice-glaze;
+$quadrant-q4-solid: $ash-glaze;
+
+// 语义色
+
+$color-success-ny: $ruqing;
+$color-warning-ny: $rice-glaze;
+$color-error-ny: $warm-ochre;
+$color-info-ny: $tianqing;
+
+// 字体系统
+
+$font-family-ny: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+                 -apple-system, BlinkMacSystemFont, sans-serif;
+$font-mono-ny: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+
+// 字号梯度 (Major Second Scale 1.125)
+$font-xs: 11px;
+$font-sm: 12px;
+$font-base: 14px;
+$font-md: 16px;
+$font-lg: 18px;
+$font-xl: 20px;
+$font-2xl: 24px;
+
+// 行高
+$line-height-tight: 1.25;
+$line-height-base: 1.5;
+$line-height-loose: 1.75;
+
+// 间距系统 (Fibonacci Progression)
+
+$space-ny-1: 4px;
+$space-ny-2: 8px;
+$space-ny-3: 12px;
+$space-ny-4: 20px;
+$space-ny-5: 32px;
+$space-ny-6: 52px;
+$space-ny-7: 84px;
+
+// 阴影系统 (釉面层次)
+
+// 平面 - 无阴影
+$shadow-flat: none;
+
+// 浅浮 - 卡片默认
+$shadow-raised:
+  0 1px 2px rgba($jianzhan, 0.05),
+  0 2px 4px rgba($jianzhan, 0.05);
+
+// 悬浮 - hover 状态
+$shadow-floating:
+  0 4px 8px rgba($jianzhan, 0.08),
+  0 8px 16px rgba($jianzhan, 0.08);
+
+// 弹出 - 模态框
+$shadow-overlay:
+  0 8px 16px rgba($jianzhan, 0.12),
+  0 16px 32px rgba($jianzhan, 0.12);
+
+// 深层 - 拖拽状态
+$shadow-deep:
+  0 12px 24px rgba($jianzhan, 0.15),
+  0 24px 48px rgba($jianzhan, 0.15);
+
+// 陶瓷高光 (内发光)
+$ceramic-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+$ceramic-highlight-subtle: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+
+// 圆角系统
+
+$radius-none: 0;
+$radius-sm-ny: 4px;
+$radius-md-ny: 8px;
+$radius-lg-ny: 12px;
+$radius-xl-ny: 16px;
+$radius-full: 9999px;
+
+// 动画时长
+
+$duration-instant: 100ms;
+$duration-fast-ny: 200ms;
+$duration-normal-ny: 300ms;
+$duration-slow-ny: 500ms;
+$duration-slower: 800ms;
+
+// 五行缓动曲线
+
+$ease-water: cubic-bezier(0.25, 0.1, 0.25, 1); // 列表滚动、页面过渡
+$ease-wood: cubic-bezier(0.34, 1.56, 0.64, 1); // 弹入动画、通知
+$ease-metal: cubic-bezier(0.4, 0, 0.2, 1); // 点击反馈、按钮
+$ease-fire: cubic-bezier(0.4, 0, 1, 1); // 快速消失、删除
+$ease-earth: cubic-bezier(0, 0, 0.2, 1); // 缓慢出现、加载
+
+// 断点系统
+
+$breakpoint-xs: 320px;
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+// CSS 自定义属性 (用于主题切换/JS 交互)
+
+:root {
+  // 五窑色系
+  --ny-yingqing: #{$yingqing};
+  --ny-tianqing: #{$tianqing};
+  --ny-ruqing: #{$ruqing};
+  --ny-longquan: #{$longquan};
+  --ny-jianzhan: #{$jianzhan};
+
+  // 四象限色系
+  --ny-warm-ochre: #{$warm-ochre};
+  --ny-celadon: #{$celadon};
+  --ny-rice-glaze: #{$rice-glaze};
+  --ny-ash-glaze: #{$ash-glaze};
+
+  // 阴影
+  --ny-shadow-raised: #{$shadow-raised};
+  --ny-shadow-floating: #{$shadow-floating};
+
+  // 动画
+  --ny-duration-fast: #{$duration-fast-ny};
+  --ny-duration-normal: #{$duration-normal-ny};
+  --ny-ease-water: #{$ease-water};
+  --ny-ease-wood: #{$ease-wood};
+  --ny-ease-metal: #{$ease-metal};
+}

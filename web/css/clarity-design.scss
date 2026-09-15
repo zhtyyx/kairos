@@ -1,0 +1,606 @@
+@use 'sass:color';
+
+// 颜色系统 - 暖灰陶瓷
+
+// 主色：温暖的大地灰
+$color-primary: #57534E;
+$color-primary-hover: #44403C;
+$color-primary-light: #78716C;
+$color-primary-subtle: #F5F5F4;
+
+// 强调色：陶土棕（用于专注、重点状态）
+$color-accent: #78716C;
+$color-accent-hover: #57534E;
+$color-accent-subtle: #FAF9F7;
+
+// 灰阶系统 - 暖调陶瓷灰
+
+$gray-900: #1C1917; // 主文本 - 温暖深灰
+$gray-800: #292524; // 强调文本
+$gray-700: #44403C; // 次要文本
+$gray-600: #57534E; // 辅助强调
+$gray-500: #78716C; // 辅助文本、占位符
+$gray-400: #A8A29E; // 禁用状态
+$gray-300: #D6D3D1; // 边框
+$gray-200: #E7E5E4; // 浅边框、分割线
+$gray-100: #F5F5F4; // 浅背景
+$gray-50:  #FAFAF9; // 更浅背景
+
+// 表面颜色 - 暖白陶瓷
+
+$surface-primary: #FFFFFF;
+$surface-secondary: #FAFAF9;
+$surface-tertiary: #F5F5F4;
+// 陶瓷釉面效果：微微带暖调的白
+$surface-ceramic: #FDFCFB;
+
+// 语义色 - 暖调柔和版本
+
+$color-success: #65A30D; // 暖调橄榄绿
+$color-warning: #D97706; // 琥珀橙
+$color-error: #DC2626; // 暖调红
+$color-info: #0891B2; // 暖调青
+
+$color-success-subtle: #F7FEE7;
+$color-warning-subtle: #FFFBEB;
+$color-error-subtle: #FEF2F2;
+$color-info-subtle: #ECFEFF;
+
+// 阴影系统 - 暖灰陶瓷质感
+
+// 基础阴影 - 带暖调的投影
+$shadow-sm: 0 1px 3px rgba(87, 83, 78, 0.06), 0 1px 2px rgba(87, 83, 78, 0.08);
+$shadow-md: 0 4px 6px rgba(87, 83, 78, 0.06), 0 2px 4px rgba(87, 83, 78, 0.08);
+$shadow-lg: 0 10px 15px rgba(87, 83, 78, 0.06), 0 4px 6px rgba(87, 83, 78, 0.07);
+
+// 陶瓷高光 - 内部温暖光泽
+$ceramic-glow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+$ceramic-glow-subtle: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+
+// 陶瓷边框 - 暖调半透明边框
+$ceramic-border: 1px solid rgba(87, 83, 78, 0.08);
+$ceramic-border-hover: 1px solid rgba(87, 83, 78, 0.15);
+
+// 圆角系统 - 圆润的陶瓷边缘
+
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 20px;
+$radius-full: 9999px;
+
+// 字体系统
+
+$font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+              "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB",
+              "Microsoft YaHei", sans-serif;
+
+$font-mono: "SF Mono", "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+
+// 字号 - 6级足够
+$text-xs: 12px;
+$text-sm: 14px;
+$text-base: 16px;
+$text-lg: 20px;
+$text-xl: 28px;
+$text-2xl: 48px;
+$text-timer: 72px;
+
+// 字重 - 3级
+$font-regular: 400;
+$font-medium: 500;
+$font-semibold: 600;
+
+// 行高
+$leading-tight: 1.25;
+$leading-normal: 1.5;
+$leading-relaxed: 1.75;
+
+// 字间距
+$tracking-tight: -0.02em;
+$tracking-normal: 0;
+$tracking-wide: 0.02em;
+
+// 间距系统 - 严格8px网格
+
+$space-0: 0;
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 20px;
+$space-6: 24px;
+$space-8: 32px;
+$space-10: 40px;
+$space-12: 48px;
+$space-16: 64px;
+$space-20: 80px;
+
+// 动效系统 - 克制
+
+$duration-fast: 120ms;
+$duration-normal: 200ms;
+$duration-slow: 300ms;
+
+$ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
+$ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+// 常用过渡
+$transition-colors: color $duration-fast $ease-out,
+                    background-color $duration-fast $ease-out,
+                    border-color $duration-fast $ease-out;
+$transition-shadow: box-shadow $duration-normal $ease-out;
+$transition-transform: transform $duration-normal $ease-out;
+
+// 布局常量
+
+$sidebar-width: 260px;
+$sidebar-collapsed: 64px;
+$header-height: 56px;
+$content-max-width: 960px;
+
+// Z-Index
+
+$z-dropdown: 100;
+$z-sticky: 200;
+$z-overlay: 300;
+$z-modal: 400;
+$z-tooltip: 500;
+
+// 断点
+
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+
+// Mixins - 精简实用
+
+// 文本省略
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Flex居中
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flex两端对齐
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// 卡片基础样式 - 陶瓷质感
+@mixin card-base {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm, $ceramic-glow-subtle;
+}
+
+// 卡片悬浮样式 - 更明显的陶瓷光泽
+@mixin card-elevated {
+  background: var(--bg-surface);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: $radius-md;
+  box-shadow: $shadow-md, $ceramic-glow;
+}
+
+// 陶瓷面板 - 用于主要容器
+@mixin ceramic-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm, $ceramic-glow;
+}
+
+// 按钮基础
+@mixin btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  padding: $space-2 $space-4;
+  font-family: $font-family;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  line-height: 1.4;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: all $duration-fast $ease-out;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// 主按钮 - 陶瓷质感
+@mixin btn-primary {
+  @include btn-base;
+  background: $color-primary;
+  color: white;
+  border: none;
+  box-shadow: $shadow-sm, inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+  &:hover:not(:disabled) {
+    background: $color-primary-hover;
+    box-shadow: $shadow-md, inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  &:active:not(:disabled) {
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// 次要按钮 - 陶瓷边框
+@mixin btn-secondary {
+  @include btn-base;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  box-shadow: $shadow-sm, $ceramic-glow-subtle;
+
+  &:hover:not(:disabled) {
+    background: var(--bg-primary);
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+  }
+}
+
+// 幽灵按钮
+@mixin btn-ghost {
+  @include btn-base;
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+
+  &:hover:not(:disabled) {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+}
+
+// 输入框基础 - 陶瓷质感
+@mixin input-base {
+  width: 100%;
+  padding: $space-3 $space-4;
+  font-family: $font-family;
+  font-size: $text-base;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-md;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color $duration-fast $ease-out, box-shadow $duration-fast $ease-out;
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04), 0 0 0 3px rgba($color-primary, 0.1);
+  }
+
+  &:disabled {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+  }
+}
+
+// 焦点环 - 柔和的陶瓷光晕
+@mixin focus-ring {
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.15);
+  }
+}
+
+// 响应式隐藏
+@mixin hide-below($breakpoint) {
+  @media (max-width: $breakpoint) {
+    display: none;
+  }
+}
+
+@mixin hide-above($breakpoint) {
+  @media (min-width: $breakpoint) {
+    display: none;
+  }
+}
+
+// CSS 自定义属性
+
+:root {
+  // 颜色
+  --color-primary: #{$color-primary};
+  --color-primary-hover: #{$color-primary-hover};
+  --color-primary-subtle: #{$color-primary-subtle};
+
+  --gray-900: #{$gray-900};
+  --gray-700: #{$gray-700};
+  --gray-500: #{$gray-500};
+  --gray-300: #{$gray-300};
+  --gray-100: #{$gray-100};
+  --gray-50: #{$gray-50};
+
+  --surface-primary: #{$surface-primary};
+  --surface-secondary: #{$surface-secondary};
+  --surface-tertiary: #{$surface-tertiary};
+
+  --color-success: #{$color-success};
+  --color-warning: #{$color-warning};
+  --color-error: #{$color-error};
+  --color-info: #{$color-info};
+
+  // 阴影
+  --shadow-sm: #{$shadow-sm};
+  --shadow-md: #{$shadow-md};
+  --shadow-lg: #{$shadow-lg};
+
+  // 圆角
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+
+  // 间距
+  --space-1: #{$space-1};
+  --space-2: #{$space-2};
+  --space-3: #{$space-3};
+  --space-4: #{$space-4};
+  --space-6: #{$space-6};
+  --space-8: #{$space-8};
+
+  // 字体
+  --font-family: #{$font-family};
+  --font-mono: #{$font-mono};
+}
+
+// 深色模式 - 暖灰调
+
+[data-theme="dark"],
+.theme-dark {
+  --color-primary: #FAFAF9;
+  --color-primary-hover: #E7E5E4;
+  --color-primary-subtle: #292524;
+
+  --gray-900: #FAFAF9;
+  --gray-700: #A8A29E;
+  --gray-500: #78716C;
+  --gray-300: #44403C;
+  --gray-100: #292524;
+  --gray-50: #1C1917;
+
+  --surface-primary: #0C0A09;
+  --surface-secondary: #1C1917;
+  --surface-tertiary: #292524;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.6);
+}
+
+// 兼容旧变量（渐进式迁移用）
+
+// 颜色兼容
+$kairos-primary-start: $color-primary;
+$kairos-primary-end: $color-primary;
+$kairos-text-strong: $gray-900;
+$kairos-text-medium: $gray-700;
+$kairos-text-subtle: $gray-500;
+$kairos-border-subtle: $gray-300;
+$kairos-surface-faint: $gray-100;
+$kairos-surface-base: $surface-primary;
+
+$ceramic-white: $surface-primary;
+$ceramic-pure: $surface-primary;
+$ceramic-pearl: $surface-primary;
+$ceramic-warm: $gray-100;
+$ceramic-bg: $gray-100;
+$ceramic-surface: $surface-primary;
+$ceramic-primary: $color-primary;
+
+// 颜色变体 - 使用 Clarity 语义色
+$ceramic-blue: $color-info;
+$ceramic-blue-light: color.adjust($color-info, $lightness: 8%);
+$ceramic-blue-dark: color.adjust($color-info, $lightness: -8%);
+$ceramic-blue-darker: color.adjust($color-info, $lightness: -16%);
+
+$ceramic-green: $color-success;
+$ceramic-green-light: color.adjust($color-success, $lightness: 8%);
+$ceramic-green-dark: color.adjust($color-success, $lightness: -8%);
+$ceramic-green-darker: color.adjust($color-success, $lightness: -16%);
+
+$ceramic-gold: $color-warning;
+$ceramic-gold-light: color.adjust($color-warning, $lightness: 8%);
+$ceramic-gold-dark: color.adjust($color-warning, $lightness: -8%);
+$ceramic-gold-darker: color.adjust($color-warning, $lightness: -16%);
+
+$ceramic-red: $color-error;
+$ceramic-red-light: color.adjust($color-error, $lightness: 8%);
+$ceramic-red-dark: color.adjust($color-error, $lightness: -8%);
+$ceramic-red-darker: color.adjust($color-error, $lightness: -16%);
+
+$ceramic-ink: $gray-900;
+$ceramic-gray: $gray-700;
+$ceramic-light: $gray-500;
+$ceramic-text: $gray-900;
+$ceramic-border: $gray-300;
+$ceramic-hover: $gray-100;
+$ceramic-bg-light: $gray-50;
+
+// 阴影兼容
+$kairos-shadow-close: $shadow-sm;
+$kairos-shadow-medium: $shadow-md;
+$kairos-shadow-overlay: $shadow-lg;
+$kairos-shadow-deep: $shadow-md;
+$ceramic-shadow-light: $shadow-sm;
+$ceramic-shadow-medium: $shadow-md;
+$ceramic-shadow-heavy: $shadow-lg;
+$ceramic-shadow-raised: $shadow-sm;
+$ceramic-shadow-pressed: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+$shadow-xs: $shadow-sm;
+
+// Glow 效果（Clarity 风格：极简，几乎不可见）
+$ceramic-glow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+$ceramic-glow-subtle: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+// 圆角兼容
+$radius-xs: $radius-sm;
+$border-radius-sm: $radius-sm;
+$border-radius-md: $radius-md;
+$border-radius-lg: $radius-lg;
+$border-radius-xl: $radius-xl;
+
+// 间距兼容
+$spacing-xs: $space-1;
+$spacing-sm: $space-2;
+$spacing-1: $space-2;
+$spacing-md: $space-4;
+$spacing-2: $space-4;
+$spacing-lg: $space-6;
+$spacing-3: $space-6;
+$spacing-xl: $space-8;
+$spacing-4: $space-8;
+$spacing-5: $space-10;
+$spacing-6: $space-12;
+$spacing-2xl: $space-12;
+$spacing-8: $space-16;
+$spacing-3xl: $space-16;
+$spacing-10: $space-20;
+
+// 字体兼容
+$font-family-base: $font-family;
+$font-family-mono: $font-mono;
+$font-primary: $font-family;
+$font-weight-light: 300;
+$font-weight-normal: $font-regular;
+$font-weight-medium: $font-medium;
+$font-weight-semibold: $font-semibold;
+$font-weight-bold: 700;
+
+$font-size-xs: $text-xs;
+$font-size-sm: $text-sm;
+$font-size-base: $text-base;
+$font-size-lg: 18px;
+$font-size-xl: $text-lg;
+$font-size-2xl: 24px;
+$font-size-3xl: 30px;
+$font-size-4xl: 36px;
+$font-size-5xl: $text-2xl;
+$font-size-8xl: $text-timer;
+$font-size-9xl: 96px;
+
+$font-size-ui-tiny: $text-xs;
+$font-size-ui-small: $text-sm;
+$font-size-ui-normal: $text-base;
+$font-size-ui-large: 18px;
+$font-size-ui-header: $text-lg;
+$font-size-timer-normal: $text-timer;
+$font-size-timer-large: 96px;
+
+$line-height-tight: $leading-tight;
+$line-height-snug: 1.375;
+$line-height-normal: $leading-normal;
+$line-height-relaxed: $leading-relaxed;
+$line-height-loose: $leading-relaxed;
+$line-height-base: $leading-normal;
+
+// 动效兼容
+$transition-fast: $duration-fast $ease-out;
+$transition-base: $duration-normal $ease-in-out;
+$transition-slow: $duration-slow $ease-in-out;
+$ease-out-cubic: $ease-out;
+$ease-in-out-cubic: $ease-in-out;
+
+// Z-index 兼容
+$z-index-dropdown: $z-dropdown;
+$z-index-sticky: $z-sticky;
+$z-index-fixed: $z-sticky;
+$z-index-modal-backdrop: $z-overlay;
+$z-index-modal: $z-modal;
+$z-index-popover: $z-modal;
+$z-index-tooltip: $z-tooltip;
+
+// 兼容 Mixins
+
+@mixin kairos-base-background {
+  background: var(--bg-secondary);
+}
+
+@mixin kairos-surface-elevated($radius: $radius-md) {
+  @include card-elevated;
+  border-radius: $radius;
+}
+
+@mixin ceramic-surface {
+  @include card-base;
+}
+
+@mixin frosted-ceramic($opacity: 0.9, $radius: $radius-md) {
+  background: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur(12px);
+  border-radius: $radius;
+  border: 1px solid var(--border-color);
+}
+
+@mixin ceramic-button {
+  @include btn-secondary;
+}
+
+@mixin ceramic-button-primary {
+  @include btn-primary;
+}
+
+@mixin kairos-gradient-text($start: $color-primary, $end: $color-primary) {
+  color: $color-primary;
+}
+
+@mixin kairos-focus-ring($color: $color-primary, $opacity: 0.2, $width: 2px) {
+  outline: $width solid rgba($color, $opacity);
+  outline-offset: 2px;
+}
+
+@mixin kairos-glow($start: $color-primary, $end: $color-primary, $opacity: 0.1) {
+  box-shadow: 0 0 24px rgba($start, $opacity);
+}
+
+@mixin kairos-drag-hover($start: $color-primary, $end: $color-primary) {
+  border-color: $color-primary;
+  background: rgba($start, 0.05);
+}
+
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin center-absolute {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin center-flex {
+  @include flex-center;
+}

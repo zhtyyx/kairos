@@ -1,0 +1,106 @@
+@use 'tokens' as *;
+
+// 开片纹理 SVG (Base64 内联)
+
+// 浅色开片 (用于浅色背景)
+$crackle-pattern-light: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='crackle' patternUnits='userSpaceOnUse' width='100' height='100'%3E%3Cpath d='M0 50 Q25 45 50 50 T100 50' stroke='%232D3B36' stroke-width='0.5' fill='none' opacity='0.08'/%3E%3Cpath d='M50 0 Q45 25 50 50 T50 100' stroke='%232D3B36' stroke-width='0.5' fill='none' opacity='0.06'/%3E%3Cpath d='M20 20 Q35 30 30 45' stroke='%232D3B36' stroke-width='0.3' fill='none' opacity='0.05'/%3E%3Cpath d='M70 60 Q85 70 80 85' stroke='%232D3B36' stroke-width='0.3' fill='none' opacity='0.05'/%3E%3Cpath d='M10 80 Q25 75 40 80' stroke='%232D3B36' stroke-width='0.3' fill='none' opacity='0.04'/%3E%3Cpath d='M60 10 Q75 15 80 30' stroke='%232D3B36' stroke-width='0.3' fill='none' opacity='0.04'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='200' height='200' fill='url(%23crackle)'/%3E%3C/svg%3E");
+
+// 深色开片 (用于深色/彩色背景)
+$crackle-pattern-dark: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='crackle' patternUnits='userSpaceOnUse' width='100' height='100'%3E%3Cpath d='M0 50 Q25 45 50 50 T100 50' stroke='%23FFFFFF' stroke-width='0.5' fill='none' opacity='0.15'/%3E%3Cpath d='M50 0 Q45 25 50 50 T50 100' stroke='%23FFFFFF' stroke-width='0.5' fill='none' opacity='0.12'/%3E%3Cpath d='M20 20 Q35 30 30 45' stroke='%23FFFFFF' stroke-width='0.3' fill='none' opacity='0.1'/%3E%3Cpath d='M70 60 Q85 70 80 85' stroke='%23FFFFFF' stroke-width='0.3' fill='none' opacity='0.1'/%3E%3Cpath d='M10 80 Q25 75 40 80' stroke='%23FFFFFF' stroke-width='0.3' fill='none' opacity='0.08'/%3E%3Cpath d='M60 10 Q75 15 80 30' stroke='%23FFFFFF' stroke-width='0.3' fill='none' opacity='0.08'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='200' height='200' fill='url(%23crackle)'/%3E%3C/svg%3E");
+
+// 开片纹理 Mixin
+
+@mixin crackle-overlay($type: 'light') {
+  content: '';
+  position: absolute;
+  inset: 0;
+  @if $type == 'light' {
+    background-image: $crackle-pattern-light;
+  } @else {
+    background-image: $crackle-pattern-dark;
+  }
+  background-size: 150px 150px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity $duration-normal-ny $ease-water;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+// 开片纹理基础类
+
+.crackle-texture {
+  position: relative;
+
+  &::before {
+    @include crackle-overlay('light');
+  }
+
+  // 悬浮时显示开片纹理
+  &:hover::before,
+  &.is-active::before {
+    opacity: 1;
+  }
+}
+
+// 深色背景版本
+.crackle-texture-dark {
+  position: relative;
+
+  &::before {
+    @include crackle-overlay('dark');
+  }
+
+  &:hover::before,
+  &.is-active::before {
+    opacity: 0.6;
+  }
+}
+
+// 常驻开片 (用于完成状态、四象限背景)
+.crackle-texture-persistent {
+  position: relative;
+
+  &::before {
+    @include crackle-overlay('dark');
+    opacity: 0.5;
+  }
+}
+
+// 开片纹理动画
+
+@keyframes crackle-shift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 150px 150px;
+  }
+}
+
+@keyframes crackle-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.05;
+  }
+}
+
+// 流动开片 (用于加载状态)
+.crackle-flowing {
+  &::before {
+    animation: crackle-shift 60s linear infinite;
+  }
+}
+
+// 无障碍：减少动画模式
+
+@media (prefers-reduced-motion: reduce) {
+  .crackle-texture::before,
+  .crackle-texture-dark::before,
+  .crackle-flowing::before {
+    animation: none;
+    transition: none;
+  }
+}

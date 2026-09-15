@@ -1,0 +1,196 @@
+@use 'tokens' as *;
+
+// 陶瓷表面
+
+// 基础陶瓷表面 (高光泽)
+@mixin ceramic-surface {
+  background: var(--bg-surface);
+  border: 1px solid $tianqing;
+  border-radius: $radius-md-ny;
+  box-shadow: $shadow-raised, $ceramic-highlight;
+}
+
+// 悬浮陶瓷表面
+@mixin ceramic-surface-elevated {
+  background: var(--bg-surface);
+  border: 1px solid rgba($tianqing, 0.6);
+  border-radius: $radius-md-ny;
+  box-shadow: $shadow-floating, $ceramic-highlight;
+}
+
+// 四象限陶瓷表面 (纯色)
+@mixin ceramic-quadrant($color) {
+  background: $color;
+  border-radius: $radius-lg-ny;
+  box-shadow: $shadow-raised;
+  position: relative;
+  overflow: hidden;
+}
+
+// 高光泽效果
+
+@mixin glaze-effect {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    border-radius: inherit;
+    pointer-events: none;
+  }
+}
+
+// 悬浮效果
+
+@mixin hover-lift($lift: -2px) {
+  transition:
+    transform $duration-fast-ny $ease-metal,
+    box-shadow $duration-fast-ny $ease-metal;
+
+  &:hover {
+    transform: translateY($lift);
+    box-shadow: $shadow-floating;
+  }
+}
+
+@mixin hover-scale($scale: 1.02) {
+  transition: transform $duration-fast-ny $ease-metal;
+
+  &:hover {
+    transform: scale($scale);
+  }
+}
+
+// 焦点环 (凝釉风格)
+
+@mixin focus-ring-ny {
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($ruqing, 0.25);
+  }
+}
+
+@mixin focus-ring-offset {
+  &:focus-visible {
+    outline: 2px solid $ruqing;
+    outline-offset: 2px;
+  }
+}
+
+// 文本省略
+
+@mixin text-ellipsis-ny {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-ellipsis-multiline($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// 响应式工具
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'xs' {
+    @media (max-width: $breakpoint-xs) { @content; }
+  } @else if $breakpoint == 'sm' {
+    @media (max-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == 'md' {
+    @media (max-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == 'lg' {
+    @media (max-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == 'xl' {
+    @media (max-width: $breakpoint-xl) { @content; }
+  }
+}
+
+@mixin respond-above($breakpoint) {
+  @if $breakpoint == 'sm' {
+    @media (min-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == 'md' {
+    @media (min-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == 'lg' {
+    @media (min-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == 'xl' {
+    @media (min-width: $breakpoint-xl) { @content; }
+  }
+}
+
+// 触控优化
+
+@mixin touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 滚动条样式
+
+@mixin custom-scrollbar($width: 6px, $thumb-color: rgba($jianzhan, 0.15)) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $radius-full;
+
+    &:hover {
+      background: rgba($jianzhan, 0.25);
+    }
+  }
+}
+
+// Flex 布局工具
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+// 视觉隐藏 (仅屏幕阅读器可见)
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -1,0 +1,260 @@
+@use '../ningyou/tokens' as *;
+@use '../ningyou/mixins' as *;
+@use '../ningyou/animations' as *;
+
+// 双栏布局
+
+.project-layout-ny {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 0;
+  height: 100%;
+}
+
+// 项目侧边栏
+
+.project-sidebar-ny {
+  @include ceramic-surface;
+
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;
+  border-right: 1px solid rgba($tianqing, 0.3);
+  overflow: hidden;
+}
+
+.project-sidebar-header-ny {
+  @include flex-between;
+  padding: $space-ny-3 $space-ny-4;
+  border-bottom: 1px solid rgba($tianqing, 0.2);
+}
+
+.project-sidebar-title-ny {
+  margin: 0;
+  font-size: $font-md;
+  font-weight: 600;
+  color: $jianzhan;
+}
+
+.project-list-ny {
+  flex: 1;
+  overflow-y: auto;
+  padding: $space-ny-2;
+
+  @include custom-scrollbar(4px);
+}
+
+// 项目列表项
+.project-item-ny {
+  @include focus-ring-ny;
+
+  display: flex;
+  align-items: center;
+  gap: $space-ny-3;
+  padding: $space-ny-2 $space-ny-3;
+  border-radius: $radius-sm-ny;
+  cursor: pointer;
+  transition: background $duration-fast-ny $ease-metal;
+
+  &:hover {
+    background: rgba($tianqing, 0.15);
+  }
+
+  &.is-active {
+    background: rgba($ruqing, 0.15);
+    color: $longquan;
+
+    .project-item-icon-ny {
+      color: $ruqing;
+    }
+  }
+}
+
+.project-item-icon-ny {
+  font-size: $font-lg;
+  flex-shrink: 0;
+}
+
+.project-item-name-ny {
+  @include text-ellipsis-ny;
+
+  flex: 1;
+  font-size: $font-base;
+  font-weight: 500;
+}
+
+.project-item-count-ny {
+  font-size: $font-xs;
+  color: rgba($jianzhan, 0.5);
+}
+
+// 子项目缩进
+.project-item-ny.is-child {
+  padding-left: $space-ny-6;
+}
+
+// 星标项目
+.project-item-ny.is-starred {
+  .project-item-icon-ny::before {
+    content: '\2605'; // ★
+    color: $warm-ochre;
+  }
+}
+
+// 任务网格区域
+
+.project-content-ny {
+  display: flex;
+  flex-direction: column;
+  padding: $space-ny-4;
+  overflow: hidden;
+}
+
+.project-content-header-ny {
+  @include flex-between;
+  gap: $space-ny-4;
+  margin-bottom: $space-ny-4;
+  flex-shrink: 0;
+}
+
+.project-content-title-ny {
+  margin: 0;
+  font-size: $font-xl;
+  font-weight: 600;
+  color: $jianzhan;
+}
+
+.project-content-actions-ny {
+  display: flex;
+  align-items: center;
+  gap: $space-ny-2;
+}
+
+// 任务网格
+.project-tasks-grid-ny {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $space-ny-3;
+  overflow-y: auto;
+  padding-right: $space-ny-2;
+
+  @include custom-scrollbar(6px);
+}
+
+// 空状态
+.project-empty-ny {
+  @include flex-center;
+  flex-direction: column;
+  gap: $space-ny-3;
+  padding: $space-ny-6;
+  text-align: center;
+  color: rgba($jianzhan, 0.5);
+
+  .empty-icon {
+    font-size: 48px;
+    opacity: 0.3;
+  }
+
+  .empty-text {
+    font-size: $font-md;
+  }
+
+  .empty-hint {
+    font-size: $font-sm;
+  }
+}
+
+// 列视觉分隔（项目列 + 看板列通用）
+.kanban-column-ny + .kanban-column-ny {
+  border-left: 1px solid rgba(#D6D3D1, 0.8);
+  padding-left: 16px;
+}
+
+// 卡片下方添加任务文字链接（Trello 风格，紧贴最后一张卡片）
+.project-add-task-text {
+  display: block;
+  width: 100%;
+  padding: $space-ny-2 $space-ny-3;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  font-size: $font-base;
+  text-align: left;
+  cursor: pointer;
+  border-radius: $radius-sm-ny;
+  transition: color $duration-fast-ny $ease-metal, background $duration-fast-ny $ease-metal;
+
+  &:hover {
+    color: var(--text-primary);
+    background: rgba($tianqing, 0.1);
+  }
+}
+
+// 响应式
+
+@include respond-to('lg') {
+  .project-layout-ny {
+    grid-template-columns: 220px 1fr;
+  }
+}
+
+@include respond-to('md') {
+  .project-layout-ny {
+    grid-template-columns: 1fr;
+  }
+
+  .project-sidebar-ny {
+    // 移动端：底部抽屉
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    max-height: 50vh;
+    border-radius: $radius-xl-ny $radius-xl-ny 0 0;
+    border-right: none;
+    border-top: 1px solid rgba($tianqing, 0.3);
+    z-index: 100;
+    transform: translateY(calc(100% - 56px));
+    transition: transform $duration-normal-ny $ease-wood;
+
+    &.is-expanded {
+      transform: translateY(0);
+    }
+  }
+
+  // 抽屉拉手
+  .project-sidebar-handle {
+    @include flex-center;
+    height: 56px;
+    cursor: pointer;
+
+    &::before {
+      content: '';
+      width: 40px;
+      height: 4px;
+      background: rgba($jianzhan, 0.2);
+      border-radius: $radius-full;
+    }
+  }
+
+  .project-sidebar-header-ny {
+    display: none;
+  }
+
+  .project-content-ny {
+    padding-bottom: 80px; // 为底部抽屉留空间
+  }
+
+  .project-tasks-grid-ny {
+    grid-template-columns: 1fr;
+  }
+}
+
+// 无障碍
+
+@media (prefers-reduced-motion: reduce) {
+  .project-sidebar-ny {
+    transition: none;
+  }
+}

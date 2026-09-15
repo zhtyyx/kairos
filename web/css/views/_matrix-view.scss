@@ -1,0 +1,257 @@
+@use '../ningyou/tokens' as *;
+
+// 网格容器
+
+.matrix-grid-ny {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  padding: 24px;
+  background: transparent;
+}
+
+// 象限基础样式
+
+.matrix-quadrant-ny {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  min-height: 200px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+
+  // 清除任何继承的伪元素
+  &::before {
+    display: none;
+  }
+}
+
+// 象限位置 + 淡底色（艾森豪威尔布局）
+
+// 左上：重要不紧急 — 淡蓝
+.matrix-quadrant-ny.q2-not-urgent-important {
+  grid-area: 1 / 1 / 2 / 2;
+  background: #F6F9FE;
+  border-color: rgba(#3B82F6, 0.1);
+}
+
+// 右上：紧急重要 — 淡暖
+.matrix-quadrant-ny.q1-urgent-important {
+  grid-area: 1 / 2 / 2 / 3;
+  background: #FDF8F5;
+  border-color: rgba($warm-ochre, 0.12);
+}
+
+// 左下：不紧急不重要 — 淡灰
+.matrix-quadrant-ny.q4-not-urgent-not-important {
+  grid-area: 2 / 1 / 3 / 2;
+  background: var(--bg-secondary);
+  border-color: rgba(#A8A29E, 0.15);
+}
+
+// 右下：紧急不重要 — 淡琥珀
+.matrix-quadrant-ny.q3-urgent-not-important {
+  grid-area: 2 / 2 / 3 / 3;
+  background: #FEFCF6;
+  border-color: rgba(#D97706, 0.12);
+}
+
+// 象限头部
+
+.quadrant-header-ny {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-ny-3;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.quadrant-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.quadrant-icon-ny {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #A8A29E;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.quadrant-title-ny {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.quadrant-subtitle-ny {
+  margin: 0;
+  font-size: $font-sm;
+  color: #A8A29E;
+  margin-top: 2px;
+}
+
+// 共通样式
+.matrix-quadrant-ny.q1-urgent-important,
+.matrix-quadrant-ny.q2-not-urgent-important,
+.matrix-quadrant-ny.q3-urgent-not-important,
+.matrix-quadrant-ny.q4-not-urgent-not-important {
+  .quadrant-title-ny { color: var(--text-primary); }
+  .quadrant-subtitle-ny { color: #A8A29E; }
+}
+
+// 象限计数 badge
+.quadrant-count-ny {
+  padding: 2px $space-ny-2;
+  font-size: $font-xs;
+  font-weight: 500;
+  border-radius: $radius-full;
+}
+
+.matrix-quadrant-ny.q1-urgent-important .quadrant-count-ny { background: rgba($warm-ochre, 0.1); color: $warm-ochre; }
+.matrix-quadrant-ny.q2-not-urgent-important .quadrant-count-ny { background: rgba(#3B82F6, 0.1); color: #3B82F6; }
+.matrix-quadrant-ny.q3-urgent-not-important .quadrant-count-ny { background: rgba(#D97706, 0.1); color: #D97706; }
+.matrix-quadrant-ny.q4-not-urgent-not-important .quadrant-count-ny { background: var(--bg-secondary); color: var(--text-muted); }
+
+// 象限任务列表
+
+.quadrant-tasks-ny {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  padding-right: $space-ny-1;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 999px;
+
+    &:hover { background: rgba(0, 0, 0, 0.22); }
+  }
+}
+
+// 象限内卡片不需要优先级左色条
+.matrix-quadrant-ny .shard-task {
+  border-left-width: 1px;
+  border-left-color: var(--border-light);
+}
+
+// 空状态
+.quadrant-empty-ny {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: $space-ny-2;
+  padding: 24px 16px;
+  text-align: center;
+  color: #A8A29E;
+  font-size: 13px;
+}
+
+// 添加任务按钮
+
+.matrix-add-task-ny {
+  color: #A8A29E;
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: #57534E;
+    background: transparent;
+    border: none;
+  }
+}
+
+// 拖放状态
+
+.matrix-quadrant-ny.is-drag-over {
+  border-color: var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+// 响应式
+
+@media (max-width: 768px) {
+  .matrix-grid-ny {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .matrix-quadrant-ny {
+    padding: 0;
+    overflow: visible;
+    border-radius: $radius-md-ny;
+    margin-bottom: $space-ny-2;
+
+    &.is-collapsed {
+      .quadrant-tasks-ny { max-height: 0; opacity: 0; overflow: hidden; padding: 0; margin: 0; }
+      .accordion-toggle::after { transform: rotate(0deg); }
+    }
+
+    &.is-expanded {
+      .quadrant-tasks-ny { max-height: 400px; opacity: 1; }
+      .accordion-toggle::after { transform: rotate(180deg); }
+    }
+  }
+
+  .quadrant-header-ny {
+    padding: $space-ny-3;
+    margin: 0;
+    cursor: pointer;
+    border-radius: $radius-md-ny;
+  }
+
+  .accordion-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+
+    &::after {
+      content: '\25BC';
+      font-size: 10px;
+      color: inherit;
+      opacity: 0.7;
+      transition: transform 0.2s ease;
+    }
+  }
+
+  .quadrant-tasks-ny {
+    padding: $space-ny-3;
+    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+  }
+}
+
+// 无障碍
+
+@media (prefers-reduced-motion: reduce) {
+  .matrix-quadrant-ny.is-expanded .quadrant-tasks-ny { animation: none; }
+  .accordion-toggle::after { transition: none; }
+}

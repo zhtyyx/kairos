@@ -1,0 +1,34 @@
+{
+  "name": "kairos",
+  "version": "2.0.0",
+  "description": "Kairos 时流 - 免费在线番茄钟与任务管理工具",
+  "scripts": {
+    "dev": "npm run dev --workspace web",
+    "build": "npm run build --workspace web",
+    "test": "playwright test",
+    "test:security": "node --test tests/privacy/*.test.mjs",
+    "check:release": "python3 scripts/check-release.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhtyyx/kairos.git"
+  },
+  "keywords": [
+    "pomodoro",
+    "task-management",
+    "time-management",
+    "pwa"
+  ],
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
+  },
+  "private": true,
+  "workspaces": [
+    "web"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

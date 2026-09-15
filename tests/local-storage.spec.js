@@ -1,0 +1,60 @@
+const { test, expect } = require('@playwright/test');
+test('local mode persists a task without contacting a remote backend', async ({ page }) => {
+  const remote = [];
+  const errors = [];
+  page.on('request', req => { if (new URL(req.url()).hostname !== 'localhost' && new URL(req.url()).hostname !== '127.0.0.1') remote.push(req.url()); });
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('/');
+  await expect(page.locator('#app')).toBeVisible();
+  await page.getByRole('button', { name: '项目', exact: true }).click();
+  await page.getByRole('button', { name: '新建项目', exact: true }).click();
+  await page.getByRole('textbox', { name: '项目名称', exact: true }).fill('Local test project');
+  await page.getByRole('button', { name: '创建', exact: true }).click();
+  await page.getByRole('heading', { name: 'Local test project', exact: true }).click();
+  await page.getByRole('button', { name: '+ 添加任务', exact: true }).click();
+  await page.getByRole('textbox', { name: '任务标题', exact: true }).fill('Open-source smoke test');
+  await page.getByRole('button', { name: '创建', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Open-source smoke test', exact: true })).toBeVisible();
+  await page.reload();
+  await expect(page.getByText('Open-source smoke test', { exact: true }).filter({ visible: true })).toBeVisible();
+  expect(errors).toEqual([]);
+  expect(remote).toEqual([]);
+});
+test('local application has no account forms or remote requests', async ({ page }) => {
+  const remote = [];
+  page.on('request', req => { if (new URL(req.url()).hostname !== '127.0.0.1') remote.push(req.url()); });
+  await page.goto('/app');
+  await expect(page.locator('#app')).toBeVisible();
+  await expect(page.locator('input[type="email"], input[autocomplete="current-password"]')).toHaveCount(0);
+  expect(remote).toEqual([]);
+});
+
+test('local data survives a full export, clear and import cycle', async ({ page }) => {
+  await page.goto('/app');
+  await expect(page.locator('#app')).toBeVisible();
+  const result = await page.evaluate(async () => {
+    const { database } = await import('/js/db.js');
+    const boardId = await database.createBoard({ name: 'Backup project' });
+    const taskId = await database.createTask({ board_id: boardId, title: 'Backup task' });
+    await database.updateTask(taskId, { title: 'Updated backup task' });
+    await database.recordTime({ task_id: taskId, duration: 1500 });
+    await database.logActivity({ task_id: taskId, action: 'created', description: 'Synthetic backup test' });
+    await database.setSetting('backup-test', 'retained');
+    const before = await database.exportAllData();
+    await database.clearAllData();
+    const emptyTasks = (await database.getTasks()).length;
+    await database.importAllData(before);
+    const after = await database.exportAllData();
+    delete before.exported_at;
+    delete after.exported_at;
+    return { before, after, emptyTasks };
+  });
+  expect(result.emptyTasks).toBe(0);
+  expect(result.after).toEqual(result.before);
+  expect(result.after.tasks[0].title).toBe('Updated backup task');
+  expect(result.after.boards).toHaveLength(1);
+  expect(result.after.time_records).toHaveLength(1);
+  expect(result.after.activity_log).toHaveLength(1);
+  await page.reload();
+  await expect(page.getByText('Updated backup task', { exact: true }).filter({ visible: true })).toBeVisible();
+});
