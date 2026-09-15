@@ -1196,7 +1196,7 @@ class KairosApp {
   applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     const logo = document.querySelector('.logo-img');
-    if (logo) logo.src = theme === 'dark' ? '/images/logo-dark.svg' : '/images/logo.svg';
+    if (logo) logo.src = theme === 'dark' ? '/images/logo-dark.png' : '/images/logo.png';
   }
 
   async loadSettings() {
