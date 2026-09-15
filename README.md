@@ -124,6 +124,11 @@ API Key 保存在当前浏览器的 localStorage。调用时，Key 和对话内�
 
 开发检查见[贡献指南](.github/CONTRIBUTING.md)，漏洞报告见[安全说明](.github/SECURITY.md)。
 
+## 友情链接
+
+Linux.Do — 技术氛围浓厚的开源社区，欢迎大家加入。
+https://linux.do/
+
 ## Star History
 
 如果 Kairos 对你有帮助，欢迎点一颗 Star。
